@@ -1,7 +1,7 @@
 locals {
   common_tags = {
     environment = "production"
-    team        = "flux-data-engineers"
+    team        = "flux-engineering"
     terraform   = true
   }
 }
