@@ -1,0 +1,24 @@
+name: CI pipeline
+on:
+  pull_request:
+    paths:
+      - "**.tf"
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: terraform fmt
+        uses: dflook/terraform-fmt-check@v1
+        with:
+          path: ./eu-central-1/production
+
+      - name: terraform validate
+        uses: dflook/terraform-validate@v2
+        with:
+          path: ./eu-central-1/production
