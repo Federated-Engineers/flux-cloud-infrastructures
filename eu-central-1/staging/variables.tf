@@ -21,3 +21,9 @@ variable "project" {
   type        = string
   default     = "Federated-Engineers"
 }
+
+variable "master_username" {
+  description = "Master username for the redshift cluster"
+  type        = string
+  default     = "admin"
+}
