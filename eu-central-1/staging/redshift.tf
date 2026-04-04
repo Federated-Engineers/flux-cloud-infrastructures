@@ -15,7 +15,7 @@ data "aws_subnet" "nordic_subnet" {
 }
 
 resource "aws_security_group" "subnet_security_group" {
-  vpc_id = data.aws_subnet.nordic_subnet.id
+  vpc_id = data.aws_vpc.nordic_vpc.id
 
   ingress {
     cidr_blocks = [data.aws_subnet.nordic_subnet.cidr_block]
@@ -24,7 +24,6 @@ resource "aws_security_group" "subnet_security_group" {
     protocol    = "tcp"
   }
 
-  # Allow all outbound traffic
   egress {
     from_port   = 0
     to_port     = 0
@@ -39,11 +38,17 @@ resource "random_password" "redshift_nordic_password" {
 }
 
 
+resource "aws_ssm_parameter" "redshift_nordic_password" {
+  name  = "/staging/flux/redshift_nordic_password"
+  type  = "SecureString"
+  value = random_password.redshift_nordic_password.result
+}
+
+
 resource "aws_iam_role" "nordic_redshift_role" {
   name = "nordic_redshift_role"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -64,8 +69,7 @@ resource "aws_iam_policy" "nordic_redshift_policy" {
   path        = "/"
   description = "My nordic policy"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -79,13 +83,6 @@ resource "aws_iam_policy" "nordic_redshift_policy" {
         Effect   = "Allow"
         Resource = "*"
       },
-      {
-        Action = [
-          "glue:*",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
     ]
   })
 }
@@ -95,7 +92,7 @@ resource "aws_iam_role_policy_attachment" "nordic-policy-attachment" {
   policy_arn = aws_iam_policy.nordic_redshift_policy.arn
 }
 
-resource "aws_redshift_cluster" "example" {
+resource "aws_redshift_cluster" "nordic-analytics-warehouse" {
   cluster_identifier = "analytics-warehouse"
   database_name      = "nordic_logistics_warehouse"
   master_username    = var.master_username
