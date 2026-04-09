@@ -23,8 +23,4 @@ variable "project" {
 }
 
 
-variable "master_username" {
-  description = "Master username for the redshift cluster"
-  type        = string
-  default     = "admin"
-}
+variable "vpc_id" {}

@@ -1,16 +1,8 @@
-# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
 crash.log
-
-# Terraform lock file (optional but usually kept)
-# .terraform.lock.hcl
-
-# Sensitive variables
 *.tfvars
 *.tfvars.json
+.terraform.lock.hcl
 
-# CLI config
-.terraformrc
-terraform.rc

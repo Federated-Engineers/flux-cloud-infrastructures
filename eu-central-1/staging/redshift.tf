@@ -1,36 +1,36 @@
 
-data "aws_vpc" "nordic_vpc" {
-  #   id = data.aws_vpc.secure_production.id
-  filter {
-    name   = "tag:Name"
-    values = ["secure-production"]
-  }
+data "aws_vpc" "secure-production" {
+  id = var.vpc_id
 }
 
-data "aws_subnet" "nordic_subnet" {
-  filter {
-    name   = "tag:Name"
-    values = ["secure-production-public-a"]
-  }
+resource "aws_subnet" "secure-production" {
+  vpc_id = data.aws_vpc.secure-production.id
 }
 
-resource "aws_security_group" "subnet_security_group" {
-  vpc_id = data.aws_vpc.nordic_vpc.id
 
-  ingress {
-    cidr_blocks = [data.aws_subnet.nordic_subnet.cidr_block]
-    from_port   = 5439
-    to_port     = 5439
-    protocol    = "tcp"
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+resource "aws_security_group" "nordic_security_group" {
+  vpc_id = data.aws_vpc.secure-production.id
 }
+
+
+resource "aws_security_group_rule" "nordic_ingress_rule" {
+  type                     = "ingress"
+  from_port                = 5439
+  to_port                  = 5439
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.nordic_security_group.id
+  source_security_group_id = aws_security_group.nordic_security_group.id
+}
+
+resource "aws_security_group_rule" "nordic_egress_rule" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  security_group_id = aws_security_group.nordic_security_group.id
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 
 resource "random_password" "redshift_nordic_password" {
   length  = 16
@@ -39,7 +39,7 @@ resource "random_password" "redshift_nordic_password" {
 
 
 resource "aws_ssm_parameter" "redshift_nordic_password" {
-  name  = "/staging/flux/redshift_nordic_password"
+  name  = "redshift_nordic_password"
   type  = "SecureString"
   value = random_password.redshift_nordic_password.result
 }
@@ -55,7 +55,7 @@ resource "aws_iam_role" "nordic_redshift_role" {
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
-        Sid    = ""
+        Sid    = "AllowRedshiftAssumeRole"
         Principal = {
           Service = "redshift.amazonaws.com"
         }
@@ -80,8 +80,11 @@ resource "aws_iam_policy" "nordic_redshift_policy" {
           "s3:GetObject*"
 
         ]
-        Effect   = "Allow"
-        Resource = "*"
+        Effect = "Allow"
+        Resource = [
+          "arn:aws:s3:::nordic_s3_bucket",
+          "arn:aws:s3:::nordic_s3_bucket/*",
+        ]
       },
     ]
   })
@@ -95,9 +98,9 @@ resource "aws_iam_role_policy_attachment" "nordic-policy-attachment" {
 resource "aws_redshift_cluster" "nordic-analytics-warehouse" {
   cluster_identifier = "analytics-warehouse"
   database_name      = "nordic_logistics_warehouse"
-  master_username    = var.master_username
+  master_username    = aws_iam_user.nordic_user.name
   master_password    = random_password.redshift_nordic_password.result
   iam_roles          = [aws_iam_role.nordic_redshift_role.arn]
-  node_type          = "dc1.large"
+  node_type          = "ra3.xlplus"
   cluster_type       = "single-node"
 }
