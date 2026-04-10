@@ -1,15 +1,15 @@
 
-data "aws_vpc" "secure-production" {
+data "aws_vpc" "nordic-secure-production" {
   id = var.vpc_id
 }
 
-resource "aws_subnet" "secure-production" {
-  vpc_id = data.aws_vpc.secure-production.id
+resource "aws_subnet" "nordic-secure-production-subnet" {
+  vpc_id = data.aws_vpc.nordic-secure-production.id
 }
 
 
 resource "aws_security_group" "nordic_security_group" {
-  vpc_id = data.aws_vpc.secure-production.id
+  vpc_id = data.aws_vpc.nordic-secure-production.id
 }
 
 

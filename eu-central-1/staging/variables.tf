@@ -22,5 +22,6 @@ variable "project" {
   default     = "Federated-Engineers"
 }
 
-
-variable "vpc_id" {}
+variable "vpc_id" {
+  default = "vpc-09a5fdb174ed7c060"
+}
