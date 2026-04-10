@@ -1,3 +1,4 @@
+
 module "nordic_s3_bucket" {
   source = "../modules/s3-bucket"
 
@@ -7,3 +8,13 @@ module "nordic_s3_bucket" {
   service         = "flux-airflow"
   versioning      = "Enabled"
 }
+
+module "riveira_bucket" {
+source = "../modules/s3_bucket"
+bucket-use-case = "riveira-dataset"
+versioning = "Enabled"
+team ="flux-cloud-infrastructures"
+environment = "prod"
+service = "data-lake"
+}
+
