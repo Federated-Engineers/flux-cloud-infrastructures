@@ -17,7 +17,3 @@ module "riveira_bucket" {
   environment = "production"
   service         = "data-lake"
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 1d133a3 (edit file)
