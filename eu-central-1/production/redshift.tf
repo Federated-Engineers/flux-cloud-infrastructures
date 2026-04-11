@@ -13,10 +13,10 @@ resource "aws_security_group" "nordic_security_group" {
 
 resource "aws_vpc_security_group_ingress_rule" "nordic_ingress_rule" {
   security_group_id = aws_security_group.nordic_security_group.id
-  cidr_ipv4         = data.aws_vpc.nordic-secure-production.cidr_block
-  from_port         = 5432
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 5439
+  to_port           = 5439
   ip_protocol       = "tcp"
-  to_port           = 5432
 }
 
 resource "aws_vpc_security_group_egress_rule" "nordic_egress_rule" {
@@ -27,7 +27,6 @@ resource "aws_vpc_security_group_egress_rule" "nordic_egress_rule" {
 
 resource "aws_iam_role" "nordic_redshift_role" {
   name = "nordic_redshift_role"
-
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -45,8 +44,7 @@ resource "aws_iam_role" "nordic_redshift_role" {
 }
 
 resource "aws_iam_policy" "nordic_redshift_policy" {
-  name        = "nordic_redshift_policy"
-  path        = "/"
+  name        = "flux_nordic_redshift_policy"
   description = "My nordic policy"
 
 
@@ -55,9 +53,8 @@ resource "aws_iam_policy" "nordic_redshift_policy" {
     Statement = [
       {
         Action = [
-          "s3:PutObject*",
-          "s3:ListObject*",
-          "s3:GetObject*"
+          "s3:List*",
+          "s3:*Object*"
 
         ]
         Effect = "Allow"
@@ -75,12 +72,6 @@ resource "aws_iam_role_policy_attachment" "nordic-policy-attachment" {
   policy_arn = aws_iam_policy.nordic_redshift_policy.arn
 }
 
-resource "aws_ssm_parameter" "redshift_nordic_username" {
-  name  = "/production/redshift/nordic_retail_collective/username"
-  type  = "String"
-  value = "nordic_retail_collective_user"
-}
-
 resource "random_password" "redshift_nordic_password" {
   length  = 16
   special = true
@@ -95,7 +86,7 @@ resource "aws_ssm_parameter" "redshift_nordic_password" {
 resource "aws_redshift_cluster" "nordic-analytics-warehouse" {
   cluster_identifier           = "analytics-warehouse"
   database_name                = "nordic_logistics_warehouse"
-  master_username              = aws_ssm_parameter.redshift_nordic_username.value
+  master_username              = "nordic_retail_collective_user"
   master_password              = aws_ssm_parameter.redshift_nordic_password.value
   iam_roles                    = [aws_iam_role.nordic_redshift_role.arn]
   node_type                    = "ra3.xlplus"

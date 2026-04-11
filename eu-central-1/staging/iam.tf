@@ -41,28 +41,3 @@ resource "aws_iam_user_policy" "flux_staging_user_policy" {
     ]
   })
 }
-
-resource "aws_iam_user" "nordic_user" {
-  name = "nordic_user"
-
-  tags = local.common_tags
-}
-
-# data "aws_ssm_parameter" "nordic_user" {
-#   name  = "nordic_user"
-#   # type  = "String"
-#   # value = aws_iam_user.nordic_user
-# }
-
-# data "aws_ssm_parameter" "nordic_user" {
-#   name = aws_ssm_parameter.nordic_user.name
-# }
-
-resource "aws_ssm_parameter" "nordic_user" {
-  name  = "nordic_user"
-  type  = "String"
-  value = aws_iam_user.nordic_user.name
-}
-
-
-

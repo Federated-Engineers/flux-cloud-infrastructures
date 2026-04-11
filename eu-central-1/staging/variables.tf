@@ -21,7 +21,3 @@ variable "project" {
   type        = string
   default     = "Federated-Engineers"
 }
-
-variable "vpc_id" {
-  default = "vpc-09a5fdb174ed7c060"
-}

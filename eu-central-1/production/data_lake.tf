@@ -6,5 +6,4 @@ module "nordic_s3_bucket" {
   bucket-use-case = "nordic"
   service         = "flux-airflow"
   versioning      = "Enabled"
-
 }
