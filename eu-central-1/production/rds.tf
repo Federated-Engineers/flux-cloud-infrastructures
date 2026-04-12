@@ -2,8 +2,21 @@ data "aws_vpc" "alpine-secure-production"{
     id = var.production-vpc
 }
 
-data "aws_subnet" "alpine-secure-production-subnet" {
+data "aws_subnet" "alpine-secure-production-subnet1" {
   id = var.production-vpc-subnet-public-a
+}
+
+data "aws_subnet" "alpine-secure-production-subnet2" {
+  id = var.production-vpc-subnet-public-b
+}
+
+resource "aws_db_subnet_group" "alpine-secure-production-subnet-group" {
+  name       = "alpine-secure-production-subnet-group"
+  subnet_ids = [data.aws_subnet.alpine-secure-production-subnet1.id, data.aws_subnet.alpine-secure-production-subnet2.id]
+
+  tags = {
+    Name = "Alpine secure production subnet group"
+  }
 }
 
 resource "aws_security_group" "alpine_security_group" {
@@ -25,8 +38,8 @@ resource "aws_vpc_security_group_egress_rule" "alpine_egress_rule" {
 }
 
 resource "random_password" "rds-alpine-password" {
-    length = 16
-    special = True
+  length = 16
+  special = true
 }
 
 resource "aws_ssm_parameter" "rds-alpine-password"{
@@ -52,6 +65,6 @@ resource "aws_db_instance" "alpine_db" {
   parameter_group_name = "default.postgres16"
   skip_final_snapshot  = true
   publicly_accessible  = true
-  db_subnet_group_name = aws_db_subnet_group.alpine-secure-production-subnet.name
+  db_subnet_group_name = aws_db_subnet_group.alpine-secure-production-subnet-group.name
   vpc_security_group_ids = [var.production-vpc-subnet-public-a]
 }
