@@ -94,6 +94,7 @@ resource "aws_redshift_cluster" "nordic-analytics-warehouse" {
   vpc_security_group_ids       = [aws_security_group.nordic_security_group.id]
   preferred_maintenance_window = "sun:23:00-sun:23:30"
   publicly_accessible          = true
+  skip_final_snapshot          = true
   tags = merge(local.common_tags, {
     Owner = "nordic-retail-collective"
   })
