@@ -6,3 +6,4 @@ module "riveira_bucket" {
   environment = "production"
   service         = "data-lake"
 }
+
