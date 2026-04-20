@@ -10,11 +10,11 @@ module "nordic_s3_bucket" {
 }
 
 module "riveira_bucket" {
-  source          = "../modules/s3_bucket"
+  source          = "../modules/s3-bucket"
   bucket-use-case = "riveira-dataset"
   versioning      = "Enabled"
-  team            = "flux-cloud-infrastructures"
-  environment     = "prod"
+  team            = "flux"
+  environment = "production"
   service         = "data-lake"
 }
 <<<<<<< HEAD
