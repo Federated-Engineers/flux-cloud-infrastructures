@@ -2,4 +2,4 @@
 .terraform/*
 .terraform.lock.hcl
 *.tfstate
-eu-central-1/production/.terraform
+.terraform

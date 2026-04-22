@@ -3,7 +3,7 @@ module "riveira_bucket" {
   bucket-use-case = "riveira-dataset"
   versioning      = "Enabled"
   team            = "flux"
-  environment = "production"
+  environment     = "production"
   service         = "data-lake"
 }
 
