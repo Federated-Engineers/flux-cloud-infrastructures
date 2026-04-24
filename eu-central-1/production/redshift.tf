@@ -7,6 +7,10 @@ data "aws_subnet" "nordic-secure-production-subnet" {
   id = var.production-vpc-subnet-public-a
 }
 
+data "aws_subnet" "nordic-secure-production-subnet-b" {
+  id = var.production-vpc-subnet-public-b
+}
+
 resource "aws_security_group" "nordic_security_group" {
   vpc_id = data.aws_vpc.nordic-secure-production.id
 }
@@ -74,13 +78,18 @@ resource "aws_iam_role_policy_attachment" "nordic-policy-attachment" {
 
 resource "random_password" "redshift_nordic_password" {
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_ssm_parameter" "redshift_nordic_password" {
   name  = "/production/redshift/nordic_retail_collective/password"
   type  = "SecureString"
   value = random_password.redshift_nordic_password.result
+}
+
+resource "aws_redshift_subnet_group" "redshift_nordic_subnet_group" {
+  name       = "nordic-subnet-group"
+  subnet_ids = [data.aws_subnet.nordic-secure-production-subnet.id, data.aws_subnet.nordic-secure-production-subnet-b.id]
 }
 
 resource "aws_redshift_cluster" "nordic-analytics-warehouse" {
@@ -95,6 +104,7 @@ resource "aws_redshift_cluster" "nordic-analytics-warehouse" {
   preferred_maintenance_window = "sun:23:00-sun:23:30"
   publicly_accessible          = true
   skip_final_snapshot          = true
+  cluster_subnet_group_name    = aws_redshift_subnet_group.redshift_nordic_subnet_group.name
   tags = merge(local.common_tags, {
     Owner = "nordic-retail-collective"
   })
