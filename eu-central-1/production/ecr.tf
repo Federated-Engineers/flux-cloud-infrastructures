@@ -19,7 +19,7 @@ resource "aws_ecr_lifecycle_policy" "flux_airflow_policy" {
       "rulePriority": 1,
       "description": "Expire images but keep the last 2 untagged images",
       "selection": {
-        "tagStatus": "untagged",
+        "tagStatus": "any",
         "countType": "imageCountMoreThan",
         "countNumber": 2
       },
