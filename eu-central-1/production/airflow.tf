@@ -20,11 +20,11 @@ resource "aws_iam_policy" "airflow_policy" {
           "${module.riveira_bucket.arn}/*"
         ]
       },
-       {sid = "GlueAccess"
+      { sid = "GlueAccess"
         Action = [
           "glue:*"
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = ["*"]
       },
     ]
