@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 module "nordic_s3_bucket" {
   source = "../modules/s3-bucket"
@@ -17,3 +18,4 @@ module "riveira_bucket" {
   environment     = "production"
   service         = "data-lake"
 }
+
