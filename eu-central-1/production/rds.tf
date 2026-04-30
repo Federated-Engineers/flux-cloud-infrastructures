@@ -1,5 +1,5 @@
-data "aws_vpc" "alpine-secure-production"{
-    id = var.production-vpc
+data "aws_vpc" "alpine-secure-production" {
+  id = var.production-vpc
 }
 
 data "aws_subnet" "alpine-secure-production-subnet1" {
@@ -38,33 +38,33 @@ resource "aws_vpc_security_group_egress_rule" "alpine_egress_rule" {
 }
 
 resource "random_password" "rds-alpine-password" {
-  length = 16
+  length  = 16
   special = true
 }
 
-resource "aws_ssm_parameter" "rds-alpine-password"{
-    name = "/production/rds/alpine/password"
-    type = "SecureString"
-    value = random_password.rds-alpine-password.result
+resource "aws_ssm_parameter" "rds-alpine-password" {
+  name  = "/production/rds/alpine/password"
+  type  = "SecureString"
+  value = random_password.rds-alpine-password.result
 }
 
-resource "aws_ssm_parameter" "rds-alpine-username"{
-    name = "/production/rds/alpine/username"
-    type = "SecureString"
-    value = "alpine-db-user"
+resource "aws_ssm_parameter" "rds-alpine-username" {
+  name  = "/production/rds/alpine/username"
+  type  = "SecureString"
+  value = "alpine-db-user"
 }
 
-resource "aws_db_instance" "alpine_db" {    
-  allocated_storage    = 10
-  db_name              = "alpine_db"
-  engine               = "postgres"
-  engine_version       = "17.6"
-  instance_class       = "db.m5.large"
-  username             = "alpine_db_user"
-  password             = random_password.rds-alpine-password.result
-  parameter_group_name = "default.postgres17"
-  skip_final_snapshot  = true
-  publicly_accessible  = true
-  db_subnet_group_name = aws_db_subnet_group.alpine-secure-production-subnet-group.name
+resource "aws_db_instance" "alpine_db" {
+  allocated_storage      = 10
+  db_name                = "alpine_db"
+  engine                 = "postgres"
+  engine_version         = "17.6"
+  instance_class         = "db.m5.large"
+  username               = "alpine_db_user"
+  password               = random_password.rds-alpine-password.result
+  parameter_group_name   = "default.postgres17"
+  skip_final_snapshot    = true
+  publicly_accessible    = true
+  db_subnet_group_name   = aws_db_subnet_group.alpine-secure-production-subnet-group.name
   vpc_security_group_ids = [aws_security_group.alpine_security_group.id]
 }
