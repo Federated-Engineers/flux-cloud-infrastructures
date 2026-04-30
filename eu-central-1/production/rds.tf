@@ -54,17 +54,17 @@ resource "aws_ssm_parameter" "rds-alpine-username"{
     value = "alpine-db-user"
 }
 
-resource "aws_db_instance" "alpine_db" {
+resource "aws_db_instance" "alpine_db" {    
   allocated_storage    = 10
-  db_name              = "alpine-db"
+  db_name              = "alpine_db"
   engine               = "postgres"
   engine_version       = "17.6"
   instance_class       = "db.m5.large"
-  username             = "alpine-db-user"
-  password             = "rds-alpine-password"
-  parameter_group_name = "default.postgres16"
+  username             = "alpine_db_user"
+  password             = random_password.rds-alpine-password.result
+  parameter_group_name = "default.postgres17"
   skip_final_snapshot  = true
   publicly_accessible  = true
   db_subnet_group_name = aws_db_subnet_group.alpine-secure-production-subnet-group.name
-  vpc_security_group_ids = [var.production-vpc-subnet-public-a]
+  vpc_security_group_ids = [aws_security_group.alpine_security_group.id]
 }
