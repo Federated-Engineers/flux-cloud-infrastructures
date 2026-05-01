@@ -11,7 +11,7 @@ data "aws_subnet" "alpine-secure-production-subnet2" {
 }
 
 resource "aws_db_subnet_group" "alpine-secure-production-subnet-group" {
-  name       = "alpine-secure-production-subnet-group"
+  name       = "secure-production-flux-subnet-group"
   subnet_ids = [data.aws_subnet.alpine-secure-production-subnet1.id, data.aws_subnet.alpine-secure-production-subnet2.id]
 
   tags = {
@@ -43,7 +43,7 @@ resource "random_password" "rds-alpine-password" {
 }
 
 resource "aws_ssm_parameter" "rds-alpine-password" {
-  name  = "/production/rds/alpine/password"
+  name  = "/production/flux/rds/alpine/password"
   type  = "SecureString"
   value = random_password.rds-alpine-password.result
 }
