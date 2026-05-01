@@ -50,7 +50,7 @@ resource "aws_ssm_parameter" "rds-alpine-password" {
 
 resource "aws_db_instance" "alpine_db" {
   allocated_storage      = 10
-  identifier = "alpine-db-instance"
+  identifier             = "alpine-db-instance"
   db_name                = "alpine_db"
   engine                 = "postgres"
   engine_version         = "17.6"
