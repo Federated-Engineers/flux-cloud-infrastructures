@@ -48,18 +48,13 @@ resource "aws_ssm_parameter" "rds-alpine-password" {
   value = random_password.rds-alpine-password.result
 }
 
-resource "aws_ssm_parameter" "rds-alpine-username" {
-  name  = "/production/rds/alpine/username"
-  type  = "SecureString"
-  value = "alpine-db-user"
-}
-
 resource "aws_db_instance" "alpine_db" {
   allocated_storage      = 10
+  identifier = "alpine-db-instance"
   db_name                = "alpine_db"
   engine                 = "postgres"
   engine_version         = "17.6"
-  instance_class         = "db.m5.large"
+  instance_class         = "db.t4g.small"
   username               = "alpine_db_user"
   password               = random_password.rds-alpine-password.result
   parameter_group_name   = "default.postgres17"
