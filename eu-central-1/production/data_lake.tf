@@ -8,8 +8,8 @@ module "nordic_s3_bucket" {
   versioning      = "Enabled"
 }
 
-module "veldvine-bucket"{
-  source ="../modules/s3-bucket"
+module "veldvine-bucket" {
+  source = "../modules/s3-bucket"
 
   environment     = var.environment
   team            = var.team
