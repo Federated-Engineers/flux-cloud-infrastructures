@@ -7,7 +7,7 @@ variable "region" {
 variable "team" {
   description = "The team responsible for the deployment"
   type        = string
-  default     = "flux"
+  default     = "flux-data-engineers"
 }
 
 variable "environment" {
