@@ -9,7 +9,7 @@ module "nordic_s3_bucket" {
 }
 
 
-module "neuralNest_s3_bucket" {
+module "neuralnest_s3_bucket" {
   source = "../modules/s3-bucket"
 
   team            = "flux"
