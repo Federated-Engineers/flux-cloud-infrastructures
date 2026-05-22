@@ -14,7 +14,7 @@ module "neuralnest_s3_bucket" {
 
   team            = "flux"
   environment     = var.environment
-  bucket-use-case = "neuralNest"
+  bucket-use-case = "neuralnest"
   service         = "flux-airflow"
   versioning      = "Enabled"
 }
