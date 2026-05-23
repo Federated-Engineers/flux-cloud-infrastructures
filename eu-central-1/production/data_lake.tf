@@ -8,6 +8,15 @@ module "nordic_s3_bucket" {
   versioning      = "Enabled"
 }
 
+module "veldvine-bucket" {
+  source = "../modules/s3-bucket"
+
+  environment     = var.environment
+  team            = "flux"
+  bucket-use-case = "veld-vine"
+  versioning      = "Enabled"
+  service         = "flux-airflow"
+}
 
 module "neuralnest_s3_bucket" {
   source = "../modules/s3-bucket"
