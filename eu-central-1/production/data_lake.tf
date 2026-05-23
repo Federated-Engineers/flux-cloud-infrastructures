@@ -17,3 +17,13 @@ module "veldvine-bucket" {
   versioning      = "Enabled"
   service         = "flux-airflow"
 }
+
+module "neuralnest_s3_bucket" {
+  source = "../modules/s3-bucket"
+
+  team            = "flux"
+  environment     = var.environment
+  bucket-use-case = "neuralnest"
+  service         = "flux-airflow"
+  versioning      = "Enabled"
+}
