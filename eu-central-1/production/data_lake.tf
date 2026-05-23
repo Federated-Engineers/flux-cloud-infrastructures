@@ -13,7 +13,7 @@ module "veldvine-bucket" {
 
   environment     = var.environment
   team            = "flux"
-  bucket-use-case = "veld_vine"
+  bucket-use-case = "veld-vine"
   versioning      = "Enabled"
   service         = "flux-airflow"
 }
