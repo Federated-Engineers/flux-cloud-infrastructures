@@ -28,10 +28,10 @@ module "neuralnest_s3_bucket" {
   versioning      = "Enabled"
 }
 
-module "riveira_bucket" {
+module "riviera_bucket" {
   source = "../modules/s3-bucket"
 
-  bucket-use-case = "riveira-dataset"
+  bucket-use-case = "riviera-dataset"
   versioning      = "Enabled"
   team            = "flux"
   environment     = "production"
