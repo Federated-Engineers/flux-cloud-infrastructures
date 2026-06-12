@@ -16,18 +16,11 @@ resource "aws_iam_policy" "airflow_policy" {
           "arn:aws:s3:::federated-flux-staging-bucket/*",
           module.nordic_s3_bucket.arn,
           "${module.nordic_s3_bucket.arn}/*",
+          "arn:aws:s3:::nrc-logistics-raw",
+          "arn:aws:s3:::nrc-logistics-raw/*",
           module.riveira_bucket.arn,
           "${module.riveira_bucket.arn}/*",
-          "arn:aws:s3:::nrc-logistics-raw",
-          "arn:aws:s3:::nrc-logistics-raw/*"
         ]
-      },
-      { sid = "GlueAccess"
-        Action = [
-          "glue:*"
-        ]
-        Effect   = "Allow"
-        Resource = ["*"]
       },
     ]
   })
