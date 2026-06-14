@@ -22,6 +22,26 @@ resource "aws_iam_policy" "airflow_policy" {
           "${module.riviera_bucket.arn}/*"
         ]
       },
+      {
+        Sid    = "ReadSSMParameters"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter",
+          "ssm:GetParameters"
+        ]
+        Resource = [
+          "arn:aws:ssm:eu-central-1:049417293525:parameter/production/google-service-account/credentials",
+        ]
+      },
+
+      {
+        Sid    = "GlueActions"
+        Effect = "Allow"
+        Action = [
+          "glue:*"
+        ]
+        Resource = ["*"]
+      }
     ]
   })
 }
