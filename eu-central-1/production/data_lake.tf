@@ -27,13 +27,3 @@ module "neuralnest_s3_bucket" {
   service         = "flux-airflow"
   versioning      = "Enabled"
 }
-
-module "riviera_bucket" {
-  source = "../modules/s3-bucket"
-
-  bucket-use-case = "riviera-dataset"
-  versioning      = "Enabled"
-  team            = "flux"
-  environment     = "production"
-  service         = "data-lake"
-}

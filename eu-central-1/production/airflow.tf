@@ -17,9 +17,7 @@ resource "aws_iam_policy" "airflow_policy" {
           module.nordic_s3_bucket.arn,
           "${module.nordic_s3_bucket.arn}/*",
           "arn:aws:s3:::nrc-logistics-raw",
-          "arn:aws:s3:::nrc-logistics-raw/*",
-          module.riviera_bucket.arn,
-          "${module.riviera_bucket.arn}/*"
+          "arn:aws:s3:::nrc-logistics-raw/*"
         ]
       },
     ]
