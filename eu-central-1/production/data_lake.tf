@@ -38,3 +38,14 @@ module "riviera_bucket" {
   service         = "data-lake"
 }
 
+
+module "lsa-dbt-terraform-state" {
+  source = "../modules/s3-bucket"
+
+  bucket-use-case = "lsa-dbt-terraform-state"
+  versioning      = "Enabled"
+  team            = "flux"
+  environment     = "production"
+  service         = "terraform-state"
+}
+
