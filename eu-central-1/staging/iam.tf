@@ -41,3 +41,97 @@ resource "aws_iam_user_policy" "flux_staging_user_policy" {
     ]
   })
 }
+
+resource "aws_iam_role" "lambda_role" {
+  name = "alpen-lambda-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_policy" {
+  name = "alpenmechanik-policy"
+  role = aws_iam_role.lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject"
+        ]
+        Resource = [
+          "${data.aws_s3_bucket.csv_bucket.arn}/*"
+        ]
+      },
+
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:*"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "transfer_role" {
+  name = "transfer-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "transfer.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "transfer_s3_policy" {
+  name = "transfer-s3-policy"
+  role = aws_iam_role.transfer_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket"
+        ]
+        Resource = [
+          data.aws_s3_bucket.csv_bucket.arn
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject"
+        ]
+        Resource = [
+          "${data.aws_s3_bucket.csv_bucket.arn}/*"
+        ]
+      }
+    ]
+  })
+}
