@@ -24,8 +24,7 @@ resource "aws_iam_user_policy" "flux_staging_user_policy" {
   name = "flux_staging_user_policy"
   user = aws_iam_user.federated_flux_staging_user.name
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
