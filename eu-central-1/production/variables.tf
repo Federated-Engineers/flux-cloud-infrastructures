@@ -43,7 +43,7 @@ variable "production-vpc-subnet-public-b" {
 variable "s3_bucket_name" {
   description = "Name of the S3 bucket for storing transformed CSV files"
   type        = string
-  default     = "alpenmechanik-datalake"
+  default     = "alpenmechanik-bucket"
 }
 
 variable "sheet_key" {
