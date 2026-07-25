@@ -1,3 +1,8 @@
+# AWS BUCKET
+# data "aws_s3_bucket" "csv_bucket" {
+#   bucket = var.s3_bucket_name
+# }
+
 # CLOUDWATCH
 resource "aws_cloudwatch_log_group" "lambda_logs" {
   name              = "/aws/lambda/sheet-transformer"
