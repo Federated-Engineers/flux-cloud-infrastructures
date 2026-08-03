@@ -46,11 +46,6 @@ variable "s3_bucket_name" {
   default     = "alpenmechanik-bucket"
 }
 
-variable "sheet_key" {
-  description = "Google Sheet ID"
-  type        = string
-}
-
 variable "ssm_path" {
   description = "SSM Parameter path containing credentials"
   type        = string
