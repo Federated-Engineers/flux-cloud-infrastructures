@@ -38,12 +38,3 @@ module "riviera_bucket" {
   service         = "data-lake"
 }
 
-module "alpenmechanik-bucket" {
-  source = "../modules/s3-bucket"
-
-  team            = var.team
-  environment     = var.environment
-  bucket-use-case = "alpen"
-  service         = "data-lake"
-  versioning      = "Enabled"
-}
