@@ -39,19 +39,3 @@ variable "production-vpc-subnet-public-b" {
   type        = string
   default     = "subnet-0af2d376a426b58bb"
 }
-
-variable "s3_bucket_name" {
-  description = "Name of the S3 bucket for storing transformed CSV files"
-  type        = string
-  default     = "alpenmechanik-bucket"
-}
-
-variable "ssm_path" {
-  description = "SSM Parameter path containing credentials"
-  type        = string
-}
-
-variable "lambda_version" {
-  description = "Git SHA of the ETL repo build to deploy"
-  type        = string
-}
