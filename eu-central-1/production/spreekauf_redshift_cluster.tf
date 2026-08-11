@@ -65,10 +65,10 @@ resource "aws_redshift_parameter_group" "spreekauf_parameter_group" {
     value = jsonencode([
 
       {
-        name          = "etl-queue"
-        priority      = "highest"
-        auto_wlm      = true
-        queue_type    = "auto"
+        name       = "etl-queue"
+        priority   = "highest"
+        auto_wlm   = true
+        queue_type = "auto"
         user_group = ["etl-job"]
       },
 
