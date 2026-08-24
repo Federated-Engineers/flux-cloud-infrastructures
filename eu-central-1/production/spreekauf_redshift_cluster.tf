@@ -124,7 +124,7 @@ resource "aws_redshift_parameter_group" "spreekauf_parameter_group" {
 resource "aws_redshift_cluster" "spreekauf_predictive_cluster" {
   cluster_identifier  = "predictive-team-spreekauf"
   database_name       = "spreekauf_data_warehouse"
-  master_username     = "spreekauf_GmBH_client"
+  master_username     = "spreekauf_gmbh_client"
   master_password     = aws_ssm_parameter.spreekauf_master_password.value
   node_type           = "rg.xlarge"
   cluster_type        = "multi-node"
@@ -135,7 +135,7 @@ resource "aws_redshift_cluster" "spreekauf_predictive_cluster" {
   cluster_subnet_group_name    = aws_redshift_subnet_group.spreekauf_subnet_group.name
   vpc_security_group_ids       = [aws_security_group.spreekauf_redshift_sg.id]
 
-  skip_final_snapshot       = false
+  skip_final_snapshot       = true
   final_snapshot_identifier = "spreekauf-predictive-final-snapshot"
 
   tags = local.common_tags
