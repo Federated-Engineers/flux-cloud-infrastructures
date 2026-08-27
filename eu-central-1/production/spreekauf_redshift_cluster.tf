@@ -138,4 +138,5 @@
 #   skip_final_snapshot       = true
 #   final_snapshot_identifier = "spreekauf-predictive-final-snapshot"
 
+#   tags = local.common_tags
 # }
